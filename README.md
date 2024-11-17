@@ -1,34 +1,8 @@
-# Mantine Vite template
+# Sea, Salt & Paper Scorer v2.0
 
-## Features
+## Now with AI!
 
-This template comes with the following features:
 
-- [PostCSS](https://postcss.org/) with [mantine-postcss-preset](https://mantine.dev/styles/postcss-preset)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Storybook](https://storybook.js.org/)
-- [Vitest](https://vitest.dev/) setup with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
-- ESLint setup with [eslint-config-mantine](https://github.com/mantinedev/eslint-config-mantine)
+![image](https://github.com/user-attachments/assets/153cc3c1-410d-4f4e-8532-340315e2b958)
 
-## npm scripts
-
-## Build and dev scripts
-
-- `dev` – start development server
-- `build` – build production version of the app
-- `preview` – locally preview production build
-
-### Testing scripts
-
-- `typecheck` – checks TypeScript types
-- `lint` – runs ESLint
-- `prettier:check` – checks files with Prettier
-- `vitest` – runs vitest tests
-- `vitest:watch` – starts vitest watch
-- `test` – runs `vitest`, `prettier:check`, `lint` and `typecheck` scripts
-
-### Other scripts
-
-- `storybook` – starts storybook dev server
-- `storybook:build` – build production storybook bundle to `storybook-static`
-- `prettier:write` – formats all files with Prettier
+### This is a WIP re-creation of one of my earlier projects, [Sea, Salt Paper Scorer](https://github.com/K0rmir/seasaltpaperscorer). It's essentially going to do exactly the same thing, expect this time....it's perso-there's AI. 
