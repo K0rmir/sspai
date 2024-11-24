@@ -1,7 +1,6 @@
+import { Prediction } from "@/interfaces/interfaces"
+
 export const callVisionApi = async (image: File) => {
-
-    console.debug("Vision API func called");
-
     const endpointUrl = "https://ssp-prediction-resource.cognitiveservices.azure.com/customvision/v3.0/Prediction/4ca4620b-735b-42cc-9d0a-8e60ac727687/detect/iterations/Iteration2/image"
     const predictionKey = import.meta.env.VITE_PREDICTION_KEY
 
@@ -28,8 +27,10 @@ export const callVisionApi = async (image: File) => {
         }
 
         const data = await response.json();
-        console.log("Response Data:", data)
-        return data
+        const predictions = data.predictions.filter((prediction: Prediction) => prediction.probability >= 0.90)
+        console.log("Data =", predictions)
+        return predictions
+
     } catch (error) {
         console.error("Request Failed:", error)
         return null;

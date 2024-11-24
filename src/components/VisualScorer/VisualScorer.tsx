@@ -6,20 +6,16 @@ import { callVisionApi } from '@/Api/visionApi';
 // import classes from './Welcome.module.css';
 
 export function VisualScorer() {
-
   const [image, setImage] = useState<File | null>(null)
 
   const photoElement = <FontAwesomeIcon icon={faImage}/>
 
   useEffect(() => {
-
     if (image) {
       callVisionApi(image)
+      
     }
-
   }, [image]);
-
-  console.log("Image =", image)
 
   return (
     <>
