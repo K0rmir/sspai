@@ -28,7 +28,6 @@ export const callVisionApi = async (image: File) => {
 
         const data = await response.json();
         const predictions = data.predictions.filter((prediction: Prediction) => prediction.probability >= 0.90)
-        console.log("Data =", predictions)
         return predictions
 
     } catch (error) {

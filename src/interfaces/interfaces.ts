@@ -13,35 +13,35 @@ export interface Prediction {
 
 // Colour obj used to count total colours on cards in image
 export interface ColourObj {
-    colour_Black: number,
-    colour_DarkBlue: number,
-    colour_LightBlue: number,
-    colour_LightGreen: number,
-    colour_LightGrey: number,
-    colour_LightOrange: number,
-    colour_LightPink: number,
-    colour_Orange: number,
-    colour_Purple: number,
-    colour_White: number,
-    colour_Yellow: number,
+    colour_black: number,
+    colour_darkBlue: number,
+    colour_lightBlue: number,
+    colour_lightGreen: number,
+    colour_lightGrey: number,
+    colour_lightOrange: number,
+    colour_lightPink: number,
+    colour_orange: number,
+    colour_purple: number,
+    colour_white: number,
+    colour_yellow: number,
 }
 // Symbol obj used to count total symbols on cards in image
 export interface SymbolObj {
-    symbol_Anchor: number,
-    symbol_Boat: number,
-    symbol_Crab: number,
-    symbol_Fish: number,
-    symbol_Mermaid: number,
-    symbol_Octopus: number,
-    symbol_Penguin: number,
-    symbol_Shark: number,
-    symbol_Shell: number,
-    symbol_Swimmer: number
+    symbol_anchor: number,
+    symbol_boat: number,
+    symbol_crab: number,
+    symbol_fish: number,
+    symbol_mermaid: number,
+    symbol_octopus: number,
+    symbol_penguin: number,
+    symbol_shark: number,
+    symbol_shell: number,
+    symbol_swimmer: number
 }
 // Multiplyer obj used to count total multiplyer cards in image
 export interface MultiplyerObj {
-    multiplyer_Anchor: number,
-    multiplyer_Boat: number,
-    multiplyer_Fish: number,
-    multiplyer_Penguin: number,
+    multiplyer_anchor: number,
+    multiplyer_boat: number,
+    multiplyer_fish: number,
+    multiplyer_penguin: number,
 }
