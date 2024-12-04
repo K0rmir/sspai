@@ -1,5 +1,4 @@
-import { ColourObj, SymbolObj, MultiplyerObj, Prediction } from '@/interfaces/interfaces'
-
+import { ColourObj, SymbolObj, MultiplyerObj, Prediction, CollectorCard } from '@/interfaces/interfaces'
 
 // Hook to encapsulate all logic pertaining to calculating the overall score found in players hand.
 
@@ -33,24 +32,25 @@ export const useCalculateScore = (preditionData: Prediction[]): number => {
         symbol_swimmer: 0
     }
 
-    const multiplyerObj: MultiplyerObj = {
-        multiplyer_anchor: 0,
-        multiplyer_boat: 0,
-        multiplyer_fish: 0,
-        multiplyer_penguin: 0,
+    const multiplierObj: MultiplyerObj = {
+        multiplier_anchor: 0,
+        multiplier_boat: 0,
+        multiplier_fish: 0,
+        multiplier_penguin: 0,
     }
 
-    // First count how many symbol are present. We do this first to assert whether or not there are any mermaid symbols present. If there are not, we don't need to count colours. 
+    // First count how many symbols and multiplyers are present. 
 
     preditionData.forEach((prediction: Prediction) => {
+        const symbolName = prediction.tagName.split('-')[1]
         if (prediction.tagName.includes('symbol')) {
-            const symbolName = prediction.tagName.split('-')[1]
             countSymbol(symbolName)
-        } else if (prediction.tagName.includes('multiplyer')) {
-            countMultiplyer(prediction.tagName)
+        } else if (prediction.tagName.includes('multiplier')) {
+            countMultiplyer(symbolName)
         }
     })
 
+    // Helper function to count total symbols in hand
     function countSymbol(symbolName: string) {
         const matchingKey = Object.keys(symbolObj).find((key) => key.includes(symbolName)) as keyof SymbolObj
 
@@ -58,10 +58,33 @@ export const useCalculateScore = (preditionData: Prediction[]): number => {
             symbolObj[matchingKey]++;
         }
     }
-
+    // Helper function to count total multiplyer cards in hand
     function countMultiplyer(multiplyerName: string) {
+        const matchingKey = Object.keys(multiplierObj).find((key) => key.includes(multiplyerName)) as keyof MultiplyerObj
 
+        if (matchingKey) {
+            multiplierObj[matchingKey]++
+        }
     }
+    // Helper function to count total colours of cards in hand
+    function countColours(colourName: string) {
+        const matchingKey = Object.keys(colourObj).find((key) => key.includes(colourName)) as keyof ColourObj
+
+        if (matchingKey) {
+            colourObj[matchingKey]++
+        }
+    }
+
+    // Once all counting is done, check if mermaid count is 1 or greater and if so, filter array by colours and call count colours on each
+    if (symbolObj.symbol_mermaid >= 1) {
+        const coloursArr = preditionData.filter((prediction: Prediction) => prediction.tagName.includes("colour"))
+        coloursArr.forEach((prediction: Prediction) => {
+            const colourName = prediction.tagName.split('-')[1]
+            countColours(colourName)
+        })
+    }
+
+
 
 
 

@@ -40,8 +40,10 @@ export interface SymbolObj {
 }
 // Multiplyer obj used to count total multiplyer cards in image
 export interface MultiplyerObj {
-    multiplyer_anchor: number,
-    multiplyer_boat: number,
-    multiplyer_fish: number,
-    multiplyer_penguin: number,
+    multiplier_anchor: number,
+    multiplier_boat: number,
+    multiplier_fish: number,
+    multiplier_penguin: number,
 }
+
+export type CollectorCard = Pick<SymbolObj, "symbol_octopus" | "symbol_penguin" | "symbol_shell">
