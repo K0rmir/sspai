@@ -1,4 +1,4 @@
-import { ColourObj, SymbolObj, MultiplyerObj, Prediction, CollectorCard } from '@/interfaces/interfaces'
+import { ColourObj, SymbolObj, MultiplyerObj, Prediction, CollectorCard, CardPair } from '@/interfaces/interfaces'
 
 // Hook to encapsulate all logic pertaining to calculating the overall score found in players hand.
 
@@ -66,14 +66,6 @@ export const useCalculateScore = (preditionData: Prediction[]): number => {
             multiplierObj[matchingKey]++
         }
     }
-    // Helper function to count total colours of cards in hand
-    function countColours(colourName: string) {
-        const matchingKey = Object.keys(colourObj).find((key) => key.includes(colourName)) as keyof ColourObj
-
-        if (matchingKey) {
-            colourObj[matchingKey]++
-        }
-    }
 
     // Once all counting is done, check if mermaid count is 1 or greater and if so, filter array by colours and call count colours on each
     if (symbolObj.symbol_mermaid >= 1) {
@@ -84,9 +76,43 @@ export const useCalculateScore = (preditionData: Prediction[]): number => {
         })
     }
 
+    // Helper function to count total colours of cards in hand
+    function countColours(colourName: string) {
+        const matchingKey = Object.keys(colourObj).find((key) => key.includes(colourName)) as keyof ColourObj
+
+        if (matchingKey) {
+            colourObj[matchingKey]++
+        }
+    }
+
+    // Next begin calculating score 
+
+    let totalScore: number = 0;
+
+    // First calculate points for pairs of cards. Boats / Fish / Crabs / Shark / Swimmers.
+
+    const cardPairs: (keyof CardPair)[] = ["symbol_boat", "symbol_fish", "symbol_crab", "symbol_shark", "symbol_swimmer",]
+    // Find total amount of relevant card pairs
+    const totalCardPairs = Object.entries(symbolObj).reduce((sum, [key, value]): number => {
+        if (cardPairs.includes(key as keyof CardPair)) {
+            return sum + value
+        }
+        return sum
+    }, 0)
+    // Divide by 2 and round down as each pair is worth 1 point
+    const cardPairPoints = Math.floor(totalCardPairs / 2)
+
+    totalScore += cardPairPoints
 
 
 
 
 
+
+
+
+
+
+
+    return totalScore
 }

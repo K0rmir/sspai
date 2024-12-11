@@ -46,4 +46,5 @@ export interface MultiplyerObj {
     multiplier_penguin: number,
 }
 
-export type CollectorCard = Pick<SymbolObj, "symbol_octopus" | "symbol_penguin" | "symbol_shell">
+export type CollectorCard = Pick<SymbolObj, "symbol_octopus" | "symbol_penguin" | "symbol_shell" | "symbol_anchor">
+export type CardPair = Omit<SymbolObj, "symbol_octopus" | "symbol_penguin" | "symbol_shell" | "symbol_anchor" | "symbol_mermaid">
