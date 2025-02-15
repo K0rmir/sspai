@@ -27,7 +27,9 @@ export const callVisionApi = async (image: File) => {
         }
 
         const data = await response.json();
-        const predictions = data.predictions.filter((prediction: Prediction) => prediction.probability >= 0.90)
+        // TODO: Increase this back to 90% probability after investigating training images more
+        const predictions = data.predictions.filter((prediction: Prediction) => prediction.probability >= 0.80)
+        console.log("Predications =", predictions)
         return predictions
 
     } catch (error) {

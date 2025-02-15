@@ -1,5 +1,5 @@
 import { FileInput } from '@mantine/core';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faImage } from '@fortawesome/free-solid-svg-icons'
 import { callVisionApi } from '@/Api/visionApi';
@@ -9,31 +9,24 @@ import { useCalculateScore } from '@/hooks/useCalculateScore';
 
 export function VisualScorer() {
   const [image, setImage] = useState<File | null>(null)
-  const [predictionData, setPredictionData] = useState<Prediction[]>()
+  const [totalScore, setTotalScore] = useState<number>()
 
   const photoElement = <FontAwesomeIcon icon={faImage}/>
 
+const fetchPredictionData = useCallback( async () => {
+  if (image) {
+    try {
+      const data = await callVisionApi(image)
+      setTotalScore(() => useCalculateScore(data))
+    } catch(error) {
+      console.error("Error fetching prediction data:", error)
+    }
+  }
+}, [image])
+
   useEffect(() => {
-    const fetchPredictionData = async () => {
-      if (image) {
-        try {
-          const data = await callVisionApi(image);
-          setPredictionData(data)
-        } catch(error) {
-          console.error("Error fetching prediction data:", error)
-        }
-      }
-    };
     fetchPredictionData();
   }, [image])
-
-  useEffect(() => {
-    if (predictionData) {
-      useCalculateScore(predictionData)
-    }
-  }, [predictionData])
-
-  console.log("Data =", predictionData)
     
 
   return (
