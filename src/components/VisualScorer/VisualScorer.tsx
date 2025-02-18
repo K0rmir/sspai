@@ -32,6 +32,7 @@ const fetchPredictionData = useCallback( async () => {
   return (
     <>
     <FileInput label="Upload an image" placeholder="to calculate your score" leftSection={photoElement}  accept="image/png,image/jpeg" clearable value={image} onChange={setImage}/>
+    <h1>{totalScore}</h1>
     
 
 
