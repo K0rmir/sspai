@@ -2,11 +2,13 @@ import { FC, useState } from 'react';
 import { Button, Group, Text, Stack, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import GameScorer from '../GameScorer/GameScorer';
+import GameOver from '@/components/GameOver/GameOver'
 import { PlayerInfo } from '@/interfaces/interfaces';
 
 const CreateGame: FC = () => {
 
     const [gameCreated, setGameCreated] = useState<boolean>(false)
+    const [gameOver, setGameOver] = useState<boolean>(false)
     const [playerNum, setPlayerNum] = useState<number>(2)
     const [gameScore, setGameScore] = useState<number>(40)
     const [playerInfo, setPlayerInfo] = useState<PlayerInfo>({
@@ -42,8 +44,8 @@ const CreateGame: FC = () => {
     }
 
     return (
-        <>
-        {!gameCreated && (
+        <Stack>
+        {!gameCreated && !gameOver && (
             <Stack>
             <Text fw={700}>Select & Enter Players</Text>
             <Group>            
@@ -69,8 +71,9 @@ const CreateGame: FC = () => {
             </Stack>
         </Stack>
         )}
-        {gameCreated && <GameScorer playerNum={playerNum} gameScore={gameScore} playerInfo={playerInfo} setPlayerInfo={setPlayerInfo}/>}
-        </>    
+        {gameCreated && !gameOver && <GameScorer playerNum={playerNum} gameScore={gameScore} playerInfo={playerInfo} setPlayerInfo={setPlayerInfo} setGameOver={setGameOver}/>}
+        {gameOver && <GameOver playerInfo={playerInfo} />}
+        </Stack>    
     )
 }
 

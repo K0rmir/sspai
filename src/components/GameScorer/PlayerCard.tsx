@@ -1,5 +1,6 @@
 import { FC } from "react"
-import { Group, Text, NumberInput, Card } from '@mantine/core';
+import { Text, NumberInput, Badge, Avatar } from '@mantine/core';
+import styles from "./PlayerCard.module.css";
 
 type PlayerCardProps = {
     name: string;
@@ -12,15 +13,16 @@ type PlayerCardProps = {
 
 export const PlayerCard: FC<PlayerCardProps> = ({ name, totalScore, inputProps }) => {
     return (
-        <>
-        <Card shadow="sm" radius="md" withBorder>
-            <Group>
-                <Text>{name}</Text>
-                <Text>{totalScore}</Text>
-            </Group>
-            <NumberInput {...inputProps} radius="lg" style={{width: 100}}   />
-        </Card>
+        <div className={styles.playerCard}>
+            <div className={styles.header}>
+                <Avatar  radius="xl" name={name[0]} className={styles.avatar} />
+                <Text className={styles.name}>{name}</Text>
+                <Badge className={styles.scoreBadge}>{totalScore}</Badge>
+            </div>
+        <div className={styles.controls}>
+            <NumberInput className={styles.scoreInput} {...inputProps} radius="lg" hideControls   />
+        </div>
 
-        </>
+        </div>
     )
 }

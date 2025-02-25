@@ -1,6 +1,6 @@
 import { Dispatch, FC, SetStateAction } from 'react';
 import { PlayerInfo } from '@/interfaces/interfaces';
-import { Button, Text, Stack } from '@mantine/core';
+import { Button, Text, Stack, Group } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { PlayerCard } from '@/components/GameScorer/PlayerCard';
 
@@ -9,9 +9,10 @@ type GameScorerProps = {
     gameScore: number,
     playerInfo: PlayerInfo,
     setPlayerInfo: Dispatch<SetStateAction<PlayerInfo>>
+    setGameOver: Dispatch<SetStateAction<boolean>>
 }
 
-const GameScorer: FC<GameScorerProps> = ({playerNum, gameScore, playerInfo, setPlayerInfo}) => {
+const GameScorer: FC<GameScorerProps> = ({playerNum, gameScore, playerInfo, setPlayerInfo, setGameOver}) => {
 
     const form = useForm({
         initialValues: {
@@ -23,34 +24,44 @@ const GameScorer: FC<GameScorerProps> = ({playerNum, gameScore, playerInfo, setP
     });
 
     const handleSubmit = (values: typeof form.values) => {
-        setPlayerInfo((prev) => ({
-            ...prev,
-            playerOne: { ...prev.playerOne, totalScore: prev.playerOne.totalScore + values.playerOne},
-            playerTwo: { ...prev.playerTwo, totalScore: prev.playerTwo.totalScore + values.playerTwo},
-            playerThree: { ...prev.playerThree, totalScore: prev.playerThree.totalScore + values.playerThree},
-            playerFour: { ...prev.playerFour, totalScore: prev.playerFour.totalScore + values.playerFour},
-        }))
-        form.reset()
+
+        const updatedPlayerScores = {
+            ...playerInfo,
+            playerOne: { ...playerInfo.playerOne, totalScore: playerInfo.playerOne.totalScore + values.playerOne},
+            playerTwo: { ...playerInfo.playerTwo, totalScore: playerInfo.playerTwo.totalScore + values.playerTwo},
+            playerThree: { ...playerInfo.playerThree, totalScore: playerInfo.playerThree.totalScore + values.playerThree},
+            playerFour: { ...playerInfo.playerFour, totalScore: playerInfo.playerFour.totalScore + values.playerFour}
+        }
+
+        setPlayerInfo(updatedPlayerScores)
+
+        if (Object.values((updatedPlayerScores)).some((player) => player.totalScore >= gameScore  )) {
+            setGameOver(true)
+        } else {
+            form.reset()
+        }      
     }
 
 
     return (
-        <Stack>
-        <Text fw={700}>Points needed to win: {gameScore}</Text>
+        <Stack align='center' justify='center'>
+            <Text fw={700}>Points needed to win: {gameScore}</Text>
+            <form onSubmit={form.onSubmit(handleSubmit)}>
+                <PlayerCard name={playerInfo.playerOne.name} totalScore={playerInfo.playerOne.totalScore} inputProps={form.getInputProps("playerOne")}  />
+                <PlayerCard name={playerInfo.playerTwo.name}  totalScore={playerInfo.playerTwo.totalScore} inputProps={form.getInputProps("playerTwo")} />
+                {playerNum === 3 && <PlayerCard name={playerInfo.playerThree.name}  totalScore={playerInfo.playerThree.totalScore} inputProps={form.getInputProps("playerThree")} />}
+                {playerNum === 4 && (
+                    <>
+                    <PlayerCard name={playerInfo.playerThree.name}  totalScore={playerInfo.playerThree.totalScore} inputProps={form.getInputProps("playerThree")} />
+                    <PlayerCard name={playerInfo.playerFour.name}  totalScore={playerInfo.playerFour.totalScore} inputProps={form.getInputProps("playerFour")} />
+                    </>
+                    )}
+                <Group justify='center' >
+                    <Button type='submit'>Update Scores</Button>
+                </Group>
+                
 
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-        <PlayerCard name={playerInfo.playerOne.name} totalScore={playerInfo.playerOne.totalScore} inputProps={form.getInputProps("playerOne")}  />
-        <PlayerCard name={playerInfo.playerTwo.name}  totalScore={playerInfo.playerTwo.totalScore} inputProps={form.getInputProps("playerTwo")} />
-        {playerNum === 3 && <PlayerCard name={playerInfo.playerThree.name}  totalScore={playerInfo.playerThree.totalScore} inputProps={form.getInputProps("playerThree")} />}
-        {playerNum === 4 && (
-            <>
-            <PlayerCard name={playerInfo.playerThree.name}  totalScore={playerInfo.playerThree.totalScore} inputProps={form.getInputProps("playerThree")} />
-            <PlayerCard name={playerInfo.playerFour.name}  totalScore={playerInfo.playerFour.totalScore} inputProps={form.getInputProps("playerFour")} />
-            </>
-        )}
-        <Button type='submit'>Update Scores</Button>
-
-        </form>
+            </form>
         </Stack>
     )
 }

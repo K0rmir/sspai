@@ -1,0 +1,81 @@
+.playerCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #333;
+    padding: 10px;
+    margin: 15px;
+    border-radius: 12px;
+    width: 350px;
+    position: relative;
+}
+
+.header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 80%;
+    height: 32px;
+    background: black;
+    padding: 4px 8px;
+    border-radius: 25px;
+    position: relative;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 3px solid white;
+    position: absolute;
+    left: -5px;
+    transform: translateY(35%);
+    z-index: 3;
+}
+
+.name {
+    color: white;
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+.scoreBadge {
+    background: #b12a74;
+    color: white;
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 50%;
+    position: absolute;
+    right: -5px;
+    top: 15px;
+    z-index: 3;
+    height: 40px;
+    width: 40px;
+    transform: translateY(-50%);
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background: orange;
+    padding: 4px;
+    border-radius: 25px;
+    z-index: 1;
+}
+
+.scoreInput input {
+    color: white;
+    font-size: 18px;
+    width: 55px;
+    text-align: center;
+}
+
+.incrementButton {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+}
