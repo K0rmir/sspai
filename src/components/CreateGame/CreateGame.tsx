@@ -10,10 +10,10 @@ const CreateGame: FC = () => {
     const [playerNum, setPlayerNum] = useState<number>(2)
     const [gameScore, setGameScore] = useState<number>(40)
     const [playerInfo, setPlayerInfo] = useState<PlayerInfo>({
-        playerOne: { name: '', score: 0 },
-        playerTwo: { name: '', score: 0 },
-        playerThree: { name: '', score: 0 },
-        playerFour: { name: '', score: 0 },
+        playerOne: { name: '', totalScore: 0 },
+        playerTwo: { name: '', totalScore: 0 },
+        playerThree: { name: '', totalScore: 0 },
+        playerFour: { name: '', totalScore: 0 },
     })
 
     const setGameInfo = (playerCount: number, score: number) => {
@@ -53,13 +53,13 @@ const CreateGame: FC = () => {
             </Group>
             <Stack>
             <form onSubmit={form.onSubmit(handleSubmit)}>              
-                    <TextInput placeholder='Player One Name' key={form.key('playerOne')} {...form.getInputProps('playerOne')}/>
-                    <TextInput placeholder='Player Two Name' key={form.key('playerTwo')} {...form.getInputProps('playerTwo')}/>
+                    <TextInput placeholder='Player One Name' required key={form.key('playerOne')} {...form.getInputProps('playerOne')}/>
+                    <TextInput placeholder='Player Two Name' required key={form.key('playerTwo')} {...form.getInputProps('playerTwo')}/>
                 {playerNum === 3 && ( <TextInput placeholder='Player Three Name' key={form.key('playerThree')} {...form.getInputProps('playerThree')} />)}
                 {playerNum === 4 && ( 
                     <>
-                    <TextInput placeholder='Player Three Name' key={form.key('playerThree')} {...form.getInputProps('playerThree')} />
-                    <TextInput placeholder='Player Four Name' key={form.key('playerFour')} {...form.getInputProps('playerFour')}/>
+                    <TextInput placeholder='Player Three Name' required key={form.key('playerThree')} {...form.getInputProps('playerThree')} />
+                    <TextInput placeholder='Player Four Name' required key={form.key('playerFour')} {...form.getInputProps('playerFour')}/>
                     </>
             )}
             <Group justify="center">
@@ -69,7 +69,6 @@ const CreateGame: FC = () => {
             </Stack>
         </Stack>
         )}
-        {/* Scoring component here */}
         {gameCreated && <GameScorer playerNum={playerNum} gameScore={gameScore} playerInfo={playerInfo} setPlayerInfo={setPlayerInfo}/>}
         </>    
     )
