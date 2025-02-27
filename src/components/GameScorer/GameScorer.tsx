@@ -4,6 +4,7 @@ import { Button, Text, Stack, Group } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { PlayerCard } from '@/components/GameScorer/PlayerCard';
 import genericStyles from "@/components/GenericStyles.module.css";
+import { VisualScorer } from '@/components/VisualScorer/VisualScorer';
 
 type GameScorerProps = {
     playerNum: number,
@@ -60,6 +61,9 @@ const GameScorer: FC<GameScorerProps> = ({playerNum, gameScore, playerInfo, setP
                 <Group justify='center' >
                     <Button type='submit' color='#b12a74' size='lg'>Update Scores</Button>
                 </Group>
+                <Group justify='center' mt={50}>
+                        <VisualScorer />
+                    </Group>
                 
 
             </form>
