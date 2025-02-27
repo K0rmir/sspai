@@ -3,6 +3,7 @@ import { PlayerInfo } from '@/interfaces/interfaces';
 import { Button, Text, Stack, Group } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { PlayerCard } from '@/components/GameScorer/PlayerCard';
+import genericStyles from "@/components/GenericStyles.module.css";
 
 type GameScorerProps = {
     playerNum: number,
@@ -45,7 +46,7 @@ const GameScorer: FC<GameScorerProps> = ({playerNum, gameScore, playerInfo, setP
 
     return (
         <Stack align='center' justify='center'>
-            <Text fw={700}>Points needed to win: {gameScore}</Text>
+            <Text fw={700} mt={35} size='xl' className={genericStyles.header}>Points needed to win: {gameScore}</Text>
             <form onSubmit={form.onSubmit(handleSubmit)}>
                 <PlayerCard name={playerInfo.playerOne.name} totalScore={playerInfo.playerOne.totalScore} inputProps={form.getInputProps("playerOne")}  />
                 <PlayerCard name={playerInfo.playerTwo.name}  totalScore={playerInfo.playerTwo.totalScore} inputProps={form.getInputProps("playerTwo")} />
@@ -57,7 +58,7 @@ const GameScorer: FC<GameScorerProps> = ({playerNum, gameScore, playerInfo, setP
                     </>
                     )}
                 <Group justify='center' >
-                    <Button type='submit'>Update Scores</Button>
+                    <Button type='submit' color='#b12a74' size='lg'>Update Scores</Button>
                 </Group>
                 
 

@@ -4,6 +4,8 @@ import { useForm } from '@mantine/form';
 import GameScorer from '../GameScorer/GameScorer';
 import GameOver from '@/components/GameOver/GameOver'
 import { PlayerInfo } from '@/interfaces/interfaces';
+import styles from "./CreateGame.module.css";
+import genericStyles from "@/components/GenericStyles.module.css";
 
 const CreateGame: FC = () => {
 
@@ -18,7 +20,7 @@ const CreateGame: FC = () => {
         playerFour: { name: '', totalScore: 0 },
     })
 
-    const setGameInfo = (playerCount: number, score: number) => {
+    const handleSetGameInfo = (playerCount: number, score: number) => {
         setPlayerNum(playerCount)
         setGameScore(score)
     }
@@ -44,17 +46,23 @@ const CreateGame: FC = () => {
     }
 
     return (
-        <Stack>
+        <Stack align='center' justify='center'>
         {!gameCreated && !gameOver && (
+            <Stack gap={25} justify='center' align='center'>
+            <Text fw={700} mt={35} size='xl' className={genericStyles.header}>Select & Enter Players</Text>
+            <Group gap={25} className={styles.playerButtons}>
+    {[{ players: 2, score: 40 }, { players: 3, score: 35 }, { players: 4, score: 30 }].map(({ players, score }) => (
+        <Button
+            key={players}
+            onClick={() => handleSetGameInfo(players, score)}
+            className={playerNum === players ? styles.playerButtonsSelected : ""}
+        >
+            {players}
+        </Button>
+    ))}
+</Group>
             <Stack>
-            <Text fw={700}>Select & Enter Players</Text>
-            <Group>            
-                <Button onClick={() => setGameInfo(2, 40)}>2</Button>
-                <Button onClick={() => setGameInfo(3, 35)}>3</Button>
-                <Button onClick={() => setGameInfo(4, 30)}>4</Button>
-            </Group>
-            <Stack>
-            <form onSubmit={form.onSubmit(handleSubmit)}>              
+                <form onSubmit={form.onSubmit(handleSubmit)} className={styles.playerNames}>              
                     <TextInput placeholder='Player One Name' required key={form.key('playerOne')} {...form.getInputProps('playerOne')}/>
                     <TextInput placeholder='Player Two Name' required key={form.key('playerTwo')} {...form.getInputProps('playerTwo')}/>
                 {playerNum === 3 && ( <TextInput placeholder='Player Three Name' key={form.key('playerThree')} {...form.getInputProps('playerThree')} />)}
@@ -64,10 +72,10 @@ const CreateGame: FC = () => {
                     <TextInput placeholder='Player Four Name' required key={form.key('playerFour')} {...form.getInputProps('playerFour')}/>
                     </>
             )}
-            <Group justify="center">
-                <Button type="submit">Create Game</Button>
-            </Group>
-            </form>
+                <Group justify="center" pt={25}>
+                <Button type="submit" size='lg' color='#b12a74'>Create Game</Button>
+                </Group>
+                </form>
             </Stack>
         </Stack>
         )}
