@@ -6,7 +6,7 @@ import {
 
 export const useCalculateScore = (predictionData: Prediction[]): number => {
 
-    let totalScore: number = 0;
+    let predictedScore: number = 0;
 
     // v Object.groupBy is freaking GOATED
     const symbolPredictions = Object.groupBy(predictionData.filter(prediction => prediction.tagName.includes("symbol")), (prediction: Prediction) => prediction.tagName)
@@ -20,19 +20,19 @@ export const useCalculateScore = (predictionData: Prediction[]): number => {
                 case "symbol-crab":
                 case "symbol-boat":
                 case "symbol-fish":
-                    totalScore += Math.floor(value.length / 2)
+                    predictedScore += Math.floor(value.length / 2)
                     break;
                 case "symbol-anchor":
-                    totalScore += (value.length * 5) - 5
+                    predictedScore += (value.length * 5) - 5
                     break;
                 case "symbol-octopus":
-                    totalScore += (value.length * 3) - 3
+                    predictedScore += (value.length * 3) - 3
                     break;
                 case "symbol-penguin":
-                    totalScore += (value.length * 2) - 1
+                    predictedScore += (value.length * 2) - 1
                     break;
                 case "symbol-shell":
-                    totalScore += (value.length * 2) - 2
+                    predictedScore += (value.length * 2) - 2
                     break;
             }
         }
@@ -40,7 +40,7 @@ export const useCalculateScore = (predictionData: Prediction[]): number => {
 
     if (symbolPredictions["symbol-shark"] && symbolPredictions["symbol-swimmer"]) {
         const sharkSwimmerPairs = Math.min(symbolPredictions["symbol-shark"].length, symbolPredictions["symbol-swimmer"].length)
-        totalScore += sharkSwimmerPairs
+        predictedScore += sharkSwimmerPairs
     }
 
     // Calculate any multiplier cards if they are present and add to total score 
@@ -49,16 +49,16 @@ export const useCalculateScore = (predictionData: Prediction[]): number => {
         Object.keys(multiplierPredictions).forEach((key) => {
             switch (key) {
                 case "multiplier-anchor":
-                    totalScore += (symbolPredictions["symbol-anchor"]?.length ?? 0) * 3
+                    predictedScore += (symbolPredictions["symbol-anchor"]?.length ?? 0) * 3
                     break;
                 case "multiplier-boat":
                 case "multiplier-fish": {
                     const splitKey = key.split("-")[1]
-                    totalScore += symbolPredictions[`symbol-${splitKey}`]?.length ?? 0
+                    predictedScore += symbolPredictions[`symbol-${splitKey}`]?.length ?? 0
                 }
                     break;
                 case "multiplier-penguin":
-                    totalScore += (symbolPredictions["symbol-penguin"]?.length ?? 0) * 2
+                    predictedScore += (symbolPredictions["symbol-penguin"]?.length ?? 0) * 2
             }
         })
     }
@@ -71,9 +71,9 @@ export const useCalculateScore = (predictionData: Prediction[]): number => {
         const colourQuantities = Object.values(colourPredictions).map(colour => colour?.length ?? 0).sort((a, b) => b - a)
 
         for (let i = 0; i < mermaidCount; i++) {
-            totalScore += colourQuantities[i]
+            predictedScore += colourQuantities[i]
         }
     }
 
-    return totalScore;
+    return predictedScore;
 };

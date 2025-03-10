@@ -4,7 +4,7 @@ import { Button, Text, Stack, Group } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { PlayerCard } from '@/components/GameScorer/PlayerCard';
 import genericStyles from "@/components/GenericStyles.module.css";
-import { VisualScorer } from '@/components/VisualScorer/VisualScorer';
+import  VisualScorer  from "@/components/VisualScorer/VisualScorer"
 
 type GameScorerProps = {
     playerNum: number,
@@ -44,6 +44,16 @@ const GameScorer: FC<GameScorerProps> = ({playerNum, gameScore, playerInfo, setP
         }      
     }
 
+    const updatePlayerScoreField = (playerKey: string, predicatedScore: number) => {
+        const validKeys = ['playerOne', 'playerTwo', 'playerThree', 'playerFour']
+
+        if (validKeys.includes(playerKey)) {
+            form.setFieldValue(playerKey, predicatedScore)
+        } else {
+            console.error(`Invalid player key: ${playerKey}`);
+        }
+    }
+
 
     return (
         <Stack align='center' justify='center'>
@@ -62,7 +72,7 @@ const GameScorer: FC<GameScorerProps> = ({playerNum, gameScore, playerInfo, setP
                     <Button type='submit' color='#b12a74' size='lg'>Update Scores</Button>
                 </Group>
                 <Group justify='center' mt={50}>
-                        <VisualScorer />
+                        <VisualScorer playerInfo={playerInfo} updatePlayerScoreField={updatePlayerScoreField} />
                     </Group>
                 
 
