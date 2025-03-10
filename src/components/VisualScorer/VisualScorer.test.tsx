@@ -1,5 +1,5 @@
 import { render, screen } from '@test-utils';
-import { VisualScorer } from './VisualScorer';
+import VisualScorer  from './VisualScorer';
 
 describe('Welcome component', () => {
   it('has correct Vite guide link', () => {

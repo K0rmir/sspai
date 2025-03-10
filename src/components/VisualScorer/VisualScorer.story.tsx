@@ -1,4 +1,4 @@
-import { VisualScorer } from './VisualScorer';
+import  VisualScorer  from './VisualScorer';
 
 export default {
   title: 'Welcome',
