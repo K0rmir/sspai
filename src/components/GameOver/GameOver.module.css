@@ -2,12 +2,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* background: #333; */
     padding: 10px;
     margin: 15px;
     border-radius: 12px;
     width: 350px;
-    /* position: relative; */
 }
 
 .content {
@@ -50,5 +48,47 @@
     right: 0px;
     height: 50px;
     width: 50px;
+}
 
+.winner {
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    border: 2px solid gold;
+    box-shadow: 0 0 10px gold;
+    animation: glowPulse 1.5s infinite ease-in-out;
+}
+
+@keyframes glowPulse {
+    0% {
+        box-shadow: 0 0 5px gold;
+    }
+
+    50% {
+        box-shadow: 0 0 15px gold;
+    }
+
+    100% {
+        box-shadow: 0 0 5px gold;
+    }
+}
+
+.winnerAvatar {
+    border: 3px solid gold !important;
+    animation: borderPulse 1.5s infinite ease-in-out;
+}
+
+@keyframes borderPulse {
+    0% {
+        border-color: gold;
+        box-shadow: 0 0 5px gold;
+    }
+
+    50% {
+        border-color: #FFD700;
+        box-shadow: 0 0 15px gold;
+    }
+
+    100% {
+        border-color: gold;
+        box-shadow: 0 0 5px gold;
+    }
 }
