@@ -4,7 +4,7 @@ import {
 
 // Hook to encapsulate all logic pertaining to calculating the overall score found in players hand.
 
-export const useCalculateScore = (predictionData: Prediction[]): number => {
+export const calculateScore = (predictionData: Prediction[]): number => {
 
     let predictedScore: number = 0;
 

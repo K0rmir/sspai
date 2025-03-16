@@ -44,7 +44,7 @@ const GameScorer: FC<GameScorerProps> = ({playerNum, gameScore, playerInfo, setP
         }      
     }
 
-    const updatePlayerScoreField = (playerKey: string, predicatedScore: number) => {
+     const updatePlayerScoreField = (playerKey: string, predicatedScore: number) => {
         const validKeys = ['playerOne', 'playerTwo', 'playerThree', 'playerFour']
 
         if (validKeys.includes(playerKey)) {

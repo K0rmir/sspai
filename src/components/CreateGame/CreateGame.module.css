@@ -8,7 +8,6 @@
 
 .playerButtons button.playerButtonsSelected {
     background-color: #1E4B7D;
-    /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); */
 }
 
 .playerNames input {
