@@ -10,11 +10,16 @@ type GameStore = {
     gameCreated: boolean,
     setGameCreated: () => void
     gameOver: boolean,
-    setGameOver: () => void
-    createPlayers: (names: string[]) => void
-    updatePlayerScores: (scores: Record<keyof PlayerInfo, number>) => void
-
+    setGameOver: () => void,
+    createPlayers: (names: string[]) => void,
+    updatePlayerScores: (scores: Record<keyof PlayerInfo, number>) => void,
+    predictedScoreInStore: { key: string; score: number } | null,
+    setPredictedScoreInStore: (key: string, score: number) => void,
+    clearPredictedScore: () => void,
 }
+
+// Overall not a fan of having a predicted score in the store which is the same value as predicted score in the Visual Scorer component. 
+// Variable names are too similar and it doesn't feel right having local/store versions of the same value. But it works for now.
 
 const playerKeys = ["playerOne", "playerTwo", "playerThree", "playerFour"]
 
@@ -30,7 +35,8 @@ export const gameStore= create<GameStore>((set) => {
         playerNum: 2,
         totalGameScore: 40,
         gameCreated: false,
-        gameOver: false,    
+        gameOver: false,  
+        predictedScoreInStore: null,  
        
         setTotalGameScore: (score) => set(() => ({ totalGameScore: score })),     
         setGameCreated: () => set((state) => ({gameCreated: !state.gameCreated})),    
@@ -54,15 +60,11 @@ export const gameStore= create<GameStore>((set) => {
             
         })),
 
-        
+        setPredictedScoreInStore: (key, score) =>
+            set(() => ({
+            predictedScoreInStore: { key, score },
+            })),
 
+        clearPredictedScore: () => set({ predictedScoreInStore: null }),
     }
-
-
-
-
-
-
-    
-
 })

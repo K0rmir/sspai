@@ -1,5 +1,5 @@
 import { PlayerInfo } from '@/interfaces/interfaces';
-import { Text, Badge, Avatar, Stack } from '@mantine/core';
+import { Text, Badge, Avatar, Stack, Button } from '@mantine/core';
 import styles from "./GameOver.module.css";
 import genericStyles from "@/components/GenericStyles.module.css";
 import { FC } from 'react';
@@ -39,6 +39,7 @@ const GameOver: FC<GameOverProps> = ({playerInfo}) => {
             const isWinner = player.totalScore === highestScore
             return (<FinalScoreCard name={player.name} totalScore={player.totalScore} winner={isWinner}/>)
         })}
+        <Button>Save Game</Button>
        </Stack>
        
     )

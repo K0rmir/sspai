@@ -1,15 +1,14 @@
-import { FC} from 'react';
+import { FC, useEffect} from 'react';
 import { PlayerInfo } from '@/interfaces/interfaces';
 import { Button, Text, Stack, Group } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { PlayerCard } from '@/components/GameScorer/PlayerCard';
 import genericStyles from "@/components/GenericStyles.module.css";
-import  VisualScorer  from "@/components/VisualScorer/VisualScorer"
 import {gameStore} from "@/store/GameStore"
 
 const GameScorer: FC = () => {
 
-    const {playerInfo, playerNum, totalGameScore, updatePlayerScores, setGameOver} = gameStore()
+    const {playerInfo, playerNum, totalGameScore, predictedScoreInStore, updatePlayerScores, setGameOver} = gameStore()
 
     const initialRoundScores = Object.entries(playerInfo).reduce((acc, [key]) => {
         acc[key as keyof PlayerInfo] = 0
@@ -20,26 +19,26 @@ const GameScorer: FC = () => {
         initialValues: initialRoundScores
     })
 
+    useEffect(() => {
+        if (predictedScoreInStore) {
+            const {key, score} = predictedScoreInStore
+            form.setFieldValue(key, score)
+        }
+    }, [predictedScoreInStore])
+
+
     const handleSubmit = (values: typeof form.values) => {
 
+
         updatePlayerScores(values)
+
+        // Using stale state here to determine end of game. Need to figure out how to check score after most recent update
 
         if (Object.values((playerInfo)).some((player) => player.totalScore >= totalGameScore  )) {
             setGameOver()
         } else {
             form.reset()
         }      
-    }
-
-    // Function used to update predicted score from visual scorer
-     const updatePlayerScoreField = (playerKey: string, predicatedScore: number) => {
-        const validKeys = ['playerOne', 'playerTwo', 'playerThree', 'playerFour']
-
-        if (validKeys.includes(playerKey)) {
-            form.setFieldValue(playerKey, predicatedScore)
-        } else {
-            console.error(`Invalid player key: ${playerKey}`);
-        }
     }
 
     return (
@@ -58,11 +57,6 @@ const GameScorer: FC = () => {
                 <Group justify='center' >
                     <Button type='submit' color='#b12a74' size='lg'>Update Scores</Button>
                 </Group>
-                <Group justify='center' mt={50}>
-                        <VisualScorer playerInfo={playerInfo} updatePlayerScoreField={updatePlayerScoreField} />
-                    </Group>
-                
-
             </form>
         </Stack>
     )

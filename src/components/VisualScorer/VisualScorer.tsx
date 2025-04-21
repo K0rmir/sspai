@@ -5,17 +5,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faImage } from '@fortawesome/free-solid-svg-icons'
 import { callVisionApi } from '@/Api/visionApi';
 import { calculateScore } from '@/hooks/calculateScore';
+import {gameStore} from "@/store/GameStore"
 
-type VisualScorerModalProps = VisualScorerProps & {
+type VisualScorerModalProps = {
+  playerInfo: PlayerInfo,
+  setPredictedScoreInStore: (key: string, score: number) => void,
   isModalOpen: boolean,
   setIsModalOpen: Dispatch<SetStateAction<boolean>>
 }
 
-const VisualScorerModal: FC<VisualScorerModalProps> = ({isModalOpen, playerInfo, updatePlayerScoreField, setIsModalOpen}) => {
+const VisualScorerModal: FC<VisualScorerModalProps> = ({isModalOpen, playerInfo, setIsModalOpen, setPredictedScoreInStore}) => {
 
   const [image, setImage] = useState<File | null>(null)
   const photoElement = <FontAwesomeIcon icon={faImage}/>
-  const [predictedScore, setPredictedScore] = useState<number | null>()
+  const [predictedScore, setPredictedScore] = useState<number | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [value, setValue] = useState<string | null>(null)
 
@@ -44,8 +47,8 @@ const VisualScorerModal: FC<VisualScorerModalProps> = ({isModalOpen, playerInfo,
   
   
     function updatePredictedScore() {
-      if (value && predictedScore) {
-        updatePlayerScoreField(value, predictedScore)
+      if (value && predictedScore !== null) {
+        setPredictedScoreInStore(value, predictedScore)
       }
       setImage(null)
       setValue(null)
@@ -78,11 +81,11 @@ const VisualScorerModal: FC<VisualScorerModalProps> = ({isModalOpen, playerInfo,
     <Stack align='center'>
       <Text size='xl' fw={700}>This hand is worth: {predictedScore} points</Text>
       <Text>Who's score is this?</Text>
-      <Select placeholder='Pick a player' data={Object.entries(playerInfo).filter(([_, player]) => player.name.trim() !== '' ).map(([key, player]) => ({
-        label: player.name,
+      <Select placeholder='Pick a player' data={Object.entries(playerInfo).map(([key, player]) => ({
+        label: player.name ?? "",
         value: key 
         }))} 
-        value={value ? value : null} onChange={(_value, option) => setValue(option.value)} />
+        value={value ?? null} onChange={(_value, option) => setValue(option.value)} />
       <Button onClick={() => updatePredictedScore()}>Update</Button>
     </Stack>
     )}
@@ -94,23 +97,19 @@ const VisualScorerModal: FC<VisualScorerModalProps> = ({isModalOpen, playerInfo,
   )
 }
 
-type VisualScorerProps = {
-  playerInfo: PlayerInfo,
-  updatePlayerScoreField: (playerKey: string, predicatedScore: number) => void,
-}
-
-const VisualScorer: FC<VisualScorerProps> = ({playerInfo, updatePlayerScoreField}) => {
+const VisualScorer: FC = () => {
+  const { playerInfo, setPredictedScoreInStore} = gameStore()
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
   return (
-    <Stack  align='center' mt={15}>
-      <Text>Unsure of your score?</Text>
-      <Text>Take a picture of your hand and let AI count it for you!</Text>
+    <>
+      {/* <Text>Unsure of your score?</Text> */}
+      {/* <Text>Take a picture of your hand and let AI count it for you!</Text> */}
       <Button onClick={() => setIsModalOpen(true)}>
         Count Score
       </Button>
-      <VisualScorerModal isModalOpen={isModalOpen} playerInfo={playerInfo} updatePlayerScoreField={updatePlayerScoreField} setIsModalOpen={setIsModalOpen} /> 
-    </Stack>
+      <VisualScorerModal isModalOpen={isModalOpen} playerInfo={playerInfo} setIsModalOpen={setIsModalOpen} setPredictedScoreInStore={setPredictedScoreInStore} /> 
+    </>
   );
 }
 

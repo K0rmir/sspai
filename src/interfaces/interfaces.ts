@@ -14,7 +14,7 @@ export interface Prediction {
 export type PlayerNum = "playerOne" | "playerTwo" | "playerThree" | "playerFour"
 
 export type Player = {
-    name?: string,
+    name: string,
     totalScore: number,
 }
 
