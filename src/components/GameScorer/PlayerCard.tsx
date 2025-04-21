@@ -3,7 +3,7 @@ import { Text, NumberInput, Badge, Avatar } from '@mantine/core';
 import styles from "./PlayerCard.module.css";
 
 type PlayerCardProps = {
-    name: string;
+    name: string | undefined;
     totalScore: number,
     inputProps: {
         value?: number | string,
@@ -11,11 +11,13 @@ type PlayerCardProps = {
     }
 }
 
+// TODO: Add images to avatar
+
 export const PlayerCard: FC<PlayerCardProps> = ({ name, totalScore, inputProps }) => {
     return (
         <div className={styles.playerCard}>
             <div className={styles.header}>
-                <Avatar  radius="xl" name={name[0]} className={styles.avatar} />
+                <Avatar  radius="xl" className={styles.avatar} />
                 <Text className={styles.name}>{name}</Text>
                 <Badge className={styles.scoreBadge}>{totalScore}</Badge>
             </div>

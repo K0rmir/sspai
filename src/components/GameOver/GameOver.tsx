@@ -9,7 +9,7 @@ type GameOverProps = {
   };
 
 type FinalScoreCardProps = {
-    name: string,
+    name?: string | undefined,
     totalScore: number,
     winner?: boolean
 }
@@ -18,7 +18,7 @@ type FinalScoreCardProps = {
     return (
         <div className={styles.finalScoreCard}>
             <div className={styles.content}>
-                <Avatar  radius="xl" name={name[0]} className={`${styles.avatar} ${winner ? styles.winnerAvatar : ''}`} />
+                <Avatar radius="xl" className={`${styles.avatar} ${winner ? styles.winnerAvatar : ''}`} />
                 <Text className={styles.name} size='xl'>{name}</Text>
                 <Badge className={`${styles.scoreBadge} ${winner ? styles.winner : ''}`}>{totalScore}</Badge>
             </div>
@@ -28,13 +28,13 @@ type FinalScoreCardProps = {
 
 const GameOver: FC<GameOverProps> = ({playerInfo}) => {
 
-    const highestScore = Math.max(...Object.values(playerInfo).filter((scores) => scores.totalScore !== 0).map((player) => player.totalScore))
+    const highestScore = Math.max(...Object.values(playerInfo).map((player) => player.totalScore))
 
     return (
          <Stack justify='center' align='center' >
             <Text fw={700} mt={35} size='xl' className={genericStyles.header}>Final Scores</Text>
 
-        {Object.values(playerInfo).filter((scores) => scores.totalScore !== 0).map((player) => {
+        {Object.values(playerInfo).map((player) => {
 
             const isWinner = player.totalScore === highestScore
             return (<FinalScoreCard name={player.name} totalScore={player.totalScore} winner={isWinner}/>)

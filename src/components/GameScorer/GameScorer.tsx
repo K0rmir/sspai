@@ -1,49 +1,37 @@
-import { Dispatch, FC, SetStateAction } from 'react';
+import { FC} from 'react';
 import { PlayerInfo } from '@/interfaces/interfaces';
 import { Button, Text, Stack, Group } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { PlayerCard } from '@/components/GameScorer/PlayerCard';
 import genericStyles from "@/components/GenericStyles.module.css";
 import  VisualScorer  from "@/components/VisualScorer/VisualScorer"
+import {gameStore} from "@/store/GameStore"
 
-type GameScorerProps = {
-    playerNum: number,
-    gameScore: number,
-    playerInfo: PlayerInfo,
-    setPlayerInfo: Dispatch<SetStateAction<PlayerInfo>>
-    setGameOver: Dispatch<SetStateAction<boolean>>
-}
+const GameScorer: FC = () => {
 
-const GameScorer: FC<GameScorerProps> = ({playerNum, gameScore, playerInfo, setPlayerInfo, setGameOver}) => {
+    const {playerInfo, playerNum, totalGameScore, updatePlayerScores, setGameOver} = gameStore()
+
+    const initialRoundScores = Object.entries(playerInfo).reduce((acc, [key]) => {
+        acc[key as keyof PlayerInfo] = 0
+        return acc
+    }, {} as Record<keyof PlayerInfo, number>)
 
     const form = useForm({
-        initialValues: {
-            playerOne: 0,
-            playerTwo: 0,
-            playerThree: 0,
-            playerFour: 0,
-        },
-    });
+        initialValues: initialRoundScores
+    })
 
     const handleSubmit = (values: typeof form.values) => {
 
-        const updatedPlayerScores = {
-            ...playerInfo,
-            playerOne: { ...playerInfo.playerOne, totalScore: playerInfo.playerOne.totalScore + values.playerOne},
-            playerTwo: { ...playerInfo.playerTwo, totalScore: playerInfo.playerTwo.totalScore + values.playerTwo},
-            playerThree: { ...playerInfo.playerThree, totalScore: playerInfo.playerThree.totalScore + values.playerThree},
-            playerFour: { ...playerInfo.playerFour, totalScore: playerInfo.playerFour.totalScore + values.playerFour}
-        }
+        updatePlayerScores(values)
 
-        setPlayerInfo(updatedPlayerScores)
-
-        if (Object.values((updatedPlayerScores)).some((player) => player.totalScore >= gameScore  )) {
-            setGameOver(true)
+        if (Object.values((playerInfo)).some((player) => player.totalScore >= totalGameScore  )) {
+            setGameOver()
         } else {
             form.reset()
         }      
     }
 
+    // Function used to update predicted score from visual scorer
      const updatePlayerScoreField = (playerKey: string, predicatedScore: number) => {
         const validKeys = ['playerOne', 'playerTwo', 'playerThree', 'playerFour']
 
@@ -54,10 +42,9 @@ const GameScorer: FC<GameScorerProps> = ({playerNum, gameScore, playerInfo, setP
         }
     }
 
-
     return (
         <Stack align='center' justify='center'>
-            <Text fw={700} mt={35} size='xl' className={genericStyles.header}>Points needed to win: {gameScore}</Text>
+            <Text fw={700} mt={35} size='xl' className={genericStyles.header}>Points needed to win: {totalGameScore}</Text>
             <form onSubmit={form.onSubmit(handleSubmit)}>
                 <PlayerCard name={playerInfo.playerOne.name} totalScore={playerInfo.playerOne.totalScore} inputProps={form.getInputProps("playerOne")}  />
                 <PlayerCard name={playerInfo.playerTwo.name}  totalScore={playerInfo.playerTwo.totalScore} inputProps={form.getInputProps("playerTwo")} />

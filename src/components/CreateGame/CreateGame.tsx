@@ -1,28 +1,21 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { Button, Group, Text, Stack, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import GameScorer from '../GameScorer/GameScorer';
 import GameOver from '@/components/GameOver/GameOver'
-import { PlayerInfo } from '@/interfaces/interfaces';
+// import { PlayerInfo } from '@/interfaces/interfaces';
 import styles from "./CreateGame.module.css";
 import genericStyles from "@/components/GenericStyles.module.css";
+import {gameStore} from "@/store/GameStore"
+import { PlayerInfo } from '@/interfaces/interfaces';
 
 const CreateGame: FC = () => {
 
-    const [gameCreated, setGameCreated] = useState<boolean>(false)
-    const [gameOver, setGameOver] = useState<boolean>(false)
-    const [playerNum, setPlayerNum] = useState<number>(2)
-    const [gameScore, setGameScore] = useState<number>(40)
-    const [playerInfo, setPlayerInfo] = useState<PlayerInfo>({
-        playerOne: { name: '', totalScore: 0 },
-        playerTwo: { name: '', totalScore: 0 },
-        playerThree: { name: '', totalScore: 0 },
-        playerFour: { name: '', totalScore: 0 },
-    })
+    const {gameCreated, gameOver, playerNum, playerInfo, setTotalGameScore, createPlayers, setGameCreated, setPlayerNum} = gameStore()
 
     const handleSetGameInfo = (playerCount: number, score: number) => {
         setPlayerNum(playerCount)
-        setGameScore(score)
+        setTotalGameScore(score)
     }
 
     const form = useForm({
@@ -35,14 +28,9 @@ const CreateGame: FC = () => {
     })
 
     const handleSubmit = (values: Record<keyof PlayerInfo, string>) => {
-        setGameCreated(true)
-        setPlayerInfo((prev) => ({
-            ...prev,
-            ...Object.fromEntries(Object.entries(values).map(([key, value]) => [
-                key,
-                {...prev[key as keyof PlayerInfo], name: value}
-            ]))
-        }))
+        const names = Object.values(values).filter((name) => name !== '')
+        createPlayers(names)
+        setGameCreated()
     }
 
     return (
@@ -79,7 +67,7 @@ const CreateGame: FC = () => {
             </Stack>
         </Stack>
         )}
-        {gameCreated && !gameOver && <GameScorer playerNum={playerNum} gameScore={gameScore} playerInfo={playerInfo} setPlayerInfo={setPlayerInfo} setGameOver={setGameOver}/>}
+        {gameCreated && !gameOver && <GameScorer />}
         {gameOver && <GameOver playerInfo={playerInfo} />}
         </Stack>    
     )

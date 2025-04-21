@@ -11,8 +11,10 @@ export interface Prediction {
     tagName: string
 }
 
+export type PlayerNum = "playerOne" | "playerTwo" | "playerThree" | "playerFour"
+
 export type Player = {
-    name: string,
+    name?: string,
     totalScore: number,
 }
 
