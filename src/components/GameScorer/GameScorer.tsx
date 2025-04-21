@@ -8,7 +8,7 @@ import {gameStore} from "@/store/GameStore"
 
 const GameScorer: FC = () => {
 
-    const {playerInfo, playerNum, totalGameScore, predictedScoreInStore, updatePlayerScores, setGameOver} = gameStore()
+    const {playerInfo, playerNum, totalGameScore, predictedScoreInStore, updatePlayerScores, setGameOver, setGameCreated} = gameStore()
 
     const initialRoundScores = Object.entries(playerInfo).reduce((acc, [key]) => {
         acc[key as keyof PlayerInfo] = 0
@@ -35,6 +35,7 @@ const GameScorer: FC = () => {
         // Using stale state here to determine end of game. Need to figure out how to check score after most recent update
 
         if (Object.values((playerInfo)).some((player) => player.totalScore >= totalGameScore  )) {
+            setGameCreated()
             setGameOver()
         } else {
             form.reset()

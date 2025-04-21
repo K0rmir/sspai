@@ -1,4 +1,4 @@
-import { PlayerInfo } from '@/interfaces/interfaces';
+import { Player, PlayerInfo } from '@/interfaces/interfaces';
 import { Text, Badge, Avatar, Stack, Button } from '@mantine/core';
 import styles from "./GameOver.module.css";
 import genericStyles from "@/components/GenericStyles.module.css";
@@ -39,11 +39,44 @@ const GameOver: FC<GameOverProps> = ({playerInfo}) => {
             const isWinner = player.totalScore === highestScore
             return (<FinalScoreCard name={player.name} totalScore={player.totalScore} winner={isWinner}/>)
         })}
-        <Button>Save Game</Button>
+        <SaveGameButton playerInfo={playerInfo}/>
        </Stack>
        
     )
 
 }
+
+type GameRecord = {
+        gameDate: string,
+        playerInfo: PlayerInfo
+}
+
+const SaveGameButton = ({playerInfo}: {playerInfo: PlayerInfo}) => {
+
+    const saveGame = () => {
+        const storageKey = "ssp-scorer"
+        const gameDate = new Date().toLocaleDateString()
+        const gameData: GameRecord = {gameDate, playerInfo}
+
+        const gameId = `game-${Date.now()}`
+
+        const existingRaw = localStorage.getItem(storageKey)
+        const existingData = existingRaw ? JSON.parse(existingRaw) : []
+
+        const updatedData = {
+            ...existingData,
+            [gameId]: gameData
+        }
+        
+        localStorage.setItem(storageKey, JSON.stringify(updatedData))
+    }
+
+
+    return (
+        <Button onClick={() => saveGame()}>Save Game</Button>
+    )
+}
+
+
 
 export default GameOver
