@@ -16,6 +16,8 @@ type GameStore = {
     predictedScoreInStore: { key: string; score: number } | null,
     setPredictedScoreInStore: (key: string, score: number) => void,
     clearPredictedScore: () => void,
+    gameHistory: boolean,
+    setGameHistory: () => void
 }
 
 // Overall not a fan of having a predicted score in the store which is the same value as predicted score in the Visual Scorer component. 
@@ -37,12 +39,12 @@ export const gameStore= create<GameStore>((set) => {
         gameCreated: false,
         gameOver: false,  
         predictedScoreInStore: null,  
+        gameHistory: false,
        
         setTotalGameScore: (score) => set(() => ({ totalGameScore: score })),     
         setGameCreated: () => set((state) => ({gameCreated: !state.gameCreated})),    
         setGameOver: () => set((state) => ({gameOver: !state.gameOver})),
         setPlayerNum: (num) => set(() => ({ playerNum: num})),
-        
         createPlayers: (names) => set(() => ({
             playerInfo: names.reduce((acc, name, i) => {
                 const key = playerKeys[i] as keyof PlayerInfo
@@ -50,7 +52,6 @@ export const gameStore= create<GameStore>((set) => {
                 return acc
             }, {} as PlayerInfo)
         })),
-
         updatePlayerScores: (scores) => set((state) => ({
             playerInfo: Object.entries((scores)).reduce((acc, [key,roundScore]) => {
                 const playerInfoKey = key as keyof PlayerInfo
@@ -59,12 +60,11 @@ export const gameStore= create<GameStore>((set) => {
             },{} as PlayerInfo)
             
         })),
-
         setPredictedScoreInStore: (key, score) =>
             set(() => ({
             predictedScoreInStore: { key, score },
             })),
-
         clearPredictedScore: () => set({ predictedScoreInStore: null }),
+        setGameHistory: () => set((state) => ({ gameHistory: !state.gameHistory}))
     }
 })

@@ -1,8 +1,6 @@
 import { FC } from 'react';
 import { Button, Group, Text, Stack, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import GameScorer from '../GameScorer/GameScorer';
-import GameOver from '@/components/GameOver/GameOver'
 // import { PlayerInfo } from '@/interfaces/interfaces';
 import styles from "./CreateGame.module.css";
 import genericStyles from "@/components/GenericStyles.module.css";
@@ -11,7 +9,7 @@ import { PlayerInfo } from '@/interfaces/interfaces';
 
 const CreateGame: FC = () => {
 
-    const {gameCreated, gameOver, playerNum, playerInfo, setTotalGameScore, createPlayers, setGameCreated, setPlayerNum} = gameStore()
+    const {gameCreated, gameOver, playerNum, setTotalGameScore, createPlayers, setGameCreated, setPlayerNum} = gameStore()
 
     const handleSetGameInfo = (playerCount: number, score: number) => {
         setPlayerNum(playerCount)
@@ -67,8 +65,7 @@ const CreateGame: FC = () => {
             </Stack>
         </Stack>
         )}
-        {gameCreated && !gameOver && <GameScorer />}
-        {gameOver && <GameOver playerInfo={playerInfo} />}
+
         </Stack>    
     )
 }

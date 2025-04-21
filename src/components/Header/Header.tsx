@@ -1,28 +1,20 @@
 import { FC } from 'react';
-import { Group } from '@mantine/core';
+import { Group, Button, px } from '@mantine/core';
 import  VisualScorer  from "@/components/VisualScorer/VisualScorer"
-import { GameHistory } from './HeaderButtons/GameHistory';
 import { gameStore } from '@/store/GameStore';
 
 export const Header: FC = () => {
 
-    const { gameCreated } = gameStore()
-
-    // Game creation view - History button
-    // Game started / in progress - Visual scorer button
-    // Game over view - History button
+    const { gameCreated, setGameHistory } = gameStore()
 
     return (
-        <Group justify="center">
+        <Group justify="center" mb={15}>
             {gameCreated && (
                 <VisualScorer   />
             )}
             {!gameCreated && (
-                <GameHistory/>
+                <Button onClick={() => setGameHistory()}>Game History</Button>
             )}
-           
-           
-           
         </Group>
     )
 

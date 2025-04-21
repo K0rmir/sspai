@@ -24,3 +24,8 @@ export type PlayerInfo = {
     playerThree: Player,
     playerFour: Player,
 }
+
+export type GameRecord = {
+    gameDate: string,
+    playerInfo: PlayerInfo
+}

@@ -1,0 +1,21 @@
+.gameCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #333;
+    /* margin-top: 15px; */
+    border-radius: 12px;
+    width: 350px;
+    position: relative;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    font-weight: 700;
+    width: 100%;
+    background: #ffa500;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px 12px 0px 0px;
+}
