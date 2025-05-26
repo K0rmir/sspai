@@ -14,13 +14,13 @@ export const GameCard: FC<GameCardProps> = ({ gameRecord }) => {
 
         <div className={styles.gameCard}>
             <div className={styles.header}>{gameDate}</div>
-              <ul>
+             
            {Object.entries(playerInfo).map(([key, player]) => (
-             <li key={key}>
-               {player.name} - {player.totalScore} points
-             </li>
+             <div key={key} className={styles.playerEntry}>
+               {player.name} - {player.totalScore}
+             </div>
            ))}
-         </ul>
+        
 
 
         </div>

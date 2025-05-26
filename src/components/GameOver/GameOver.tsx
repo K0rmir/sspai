@@ -3,6 +3,7 @@ import { Text, Badge, Avatar, Stack, Button } from '@mantine/core';
 import styles from "./GameOver.module.css";
 import genericStyles from "@/components/GenericStyles.module.css";
 import { FC } from 'react';
+import { gameStore } from '@/store/GameStore';
 
 type GameOverProps = {
     playerInfo: PlayerInfo;
@@ -30,10 +31,13 @@ type FinalScoreCardProps = {
 
 const GameOver: FC<GameOverProps> = ({playerInfo}) => {
 
+    const {  gameHistory } = gameStore()
+
     const highestScore = Math.max(...Object.values(playerInfo).map((player) => player.totalScore))
 
     return (
-         <Stack justify='center' align='center' >
+        !gameHistory && (
+            <Stack justify='center' align='center' >
             <Text fw={700} mt={35} size='xl' className={genericStyles.header}>Final Scores</Text>
 
         {Object.values(playerInfo).map((player) => {
@@ -43,11 +47,10 @@ const GameOver: FC<GameOverProps> = ({playerInfo}) => {
         })}
         <SaveGameButton playerInfo={playerInfo}/>
        </Stack>
-       
-    )
-}
+        ))}
 
 const SaveGameButton = ({playerInfo}: {playerInfo: PlayerInfo}) => {
+    const {  setGameHistory } = gameStore()
 
     const saveGame = () => {
         const storageKey = "ssp-scorer"
@@ -65,6 +68,8 @@ const SaveGameButton = ({playerInfo}: {playerInfo: PlayerInfo}) => {
         }
 
         localStorage.setItem(storageKey, JSON.stringify(updatedData))
+        setGameHistory()
+
     }
 
 

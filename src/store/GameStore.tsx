@@ -1,23 +1,27 @@
 import {create} from "zustand"
 import { PlayerInfo} from '@/interfaces/interfaces';
 
-type GameStore = {
+type GameStoreState = {
     playerInfo: PlayerInfo,
     totalGameScore: number,
-    setTotalGameScore: (score: number) => void,
     playerNum: number,
-    setPlayerNum: (num: number) => void
     gameCreated: boolean,
-    setGameCreated: () => void
     gameOver: boolean,
+    predictedScoreInStore: { key: string; score: number } | null,
+    gameHistory: boolean,
+}
+
+type GameStoreActions = {
+    setTotalGameScore: (score: number) => void,
+    setPlayerNum: (num: number) => void,
+    setGameCreated: () => void,
     setGameOver: () => void,
     createPlayers: (names: string[]) => void,
     updatePlayerScores: (scores: Record<keyof PlayerInfo, number>) => void,
-    predictedScoreInStore: { key: string; score: number } | null,
     setPredictedScoreInStore: (key: string, score: number) => void,
     clearPredictedScore: () => void,
-    gameHistory: boolean,
     setGameHistory: () => void
+    resetGameState: () => void
 }
 
 // Overall not a fan of having a predicted score in the store which is the same value as predicted score in the Visual Scorer component. 
@@ -25,22 +29,26 @@ type GameStore = {
 
 const playerKeys = ["playerOne", "playerTwo", "playerThree", "playerFour"]
 
-export const gameStore= create<GameStore>((set) => {
+const initialState: GameStoreState = {
+    playerInfo: {
+        playerOne: {name: "", totalScore: 0},
+        playerTwo: {name: "", totalScore: 0},
+        playerThree: {name: "", totalScore: 0},
+        playerFour: {name: "", totalScore: 0},
+    },
+    playerNum: 2,
+    totalGameScore: 40,
+    gameCreated: false,
+    gameOver: false,  
+    predictedScoreInStore: null,  
+    gameHistory: false,
+
+}
+
+export const gameStore= create<GameStoreState & GameStoreActions>((set) => {
 
     return {
-        playerInfo: {
-            playerOne: {name: "", totalScore: 0},
-            playerTwo: {name: "", totalScore: 0},
-            playerThree: {name: "", totalScore: 0},
-            playerFour: {name: "", totalScore: 0},
-        },
-        playerNum: 2,
-        totalGameScore: 40,
-        gameCreated: false,
-        gameOver: false,  
-        predictedScoreInStore: null,  
-        gameHistory: false,
-       
+        ...initialState,       
         setTotalGameScore: (score) => set(() => ({ totalGameScore: score })),     
         setGameCreated: () => set((state) => ({gameCreated: !state.gameCreated})),    
         setGameOver: () => set((state) => ({gameOver: !state.gameOver})),
@@ -65,6 +73,7 @@ export const gameStore= create<GameStore>((set) => {
             predictedScoreInStore: { key, score },
             })),
         clearPredictedScore: () => set({ predictedScoreInStore: null }),
-        setGameHistory: () => set((state) => ({ gameHistory: !state.gameHistory}))
+        setGameHistory: () => set((state) => ({ gameHistory: !state.gameHistory})),
+        resetGameState: () => set(initialState)
     }
 })
