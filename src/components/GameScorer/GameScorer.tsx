@@ -26,20 +26,20 @@ const GameScorer: FC = () => {
         }
     }, [predictedScoreInStore])
 
-
-    const handleSubmit = (values: typeof form.values) => {
-
-
-        updatePlayerScores(values)
-
-        // Using stale state here to determine end of game. Need to figure out how to check score after most recent update
-
+    useEffect(() => {
         if (Object.values((playerInfo)).some((player) => player.totalScore >= totalGameScore  )) {
             setGameCreated()
             setGameOver()
         } else {
             form.reset()
-        }      
+        }
+
+
+    }, [playerInfo])
+
+
+    const handleSubmit = (values: typeof form.values) => {
+        updatePlayerScores(values)   
     }
 
     return (
