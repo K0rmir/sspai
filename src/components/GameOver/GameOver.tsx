@@ -59,9 +59,12 @@ const SaveGameButton = ({playerInfo}: {playerInfo: PlayerInfo}) => {
 
         const gameId = `game-${Date.now()}`
 
+        // retrieve and parse existing game data from local storage
+
         const existingRaw = localStorage.getItem(storageKey)
         const existingData = existingRaw ? JSON.parse(existingRaw) : {}
 
+        // spread existing data and add new game to it
         const updatedData = {
             ...existingData,
             [gameId]: gameData
