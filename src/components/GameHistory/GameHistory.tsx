@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { GameCard } from './GameCard';
-// import { GameRecord } from '@/interfaces/interfaces';
 import { UseGameHistory } from '@/hooks/UseGameHistory';
 import { Stack, ScrollArea, Text } from '@mantine/core';
 

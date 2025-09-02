@@ -31,12 +31,12 @@ type FinalScoreCardProps = {
 
 const GameOver: FC<GameOverProps> = ({playerInfo}) => {
 
-    const {  gameHistory } = gameStore()
+    const {  gameHistoryToggle } = gameStore()
 
     const highestScore = Math.max(...Object.values(playerInfo).map((player) => player.totalScore))
 
     return (
-        !gameHistory && (
+        !gameHistoryToggle && (
             <Stack justify='center' align='center' >
             <Text fw={700} mt={35} size='xl' className={genericStyles.header}>Final Scores</Text>
 
@@ -50,7 +50,7 @@ const GameOver: FC<GameOverProps> = ({playerInfo}) => {
         ))}
 
 const SaveGameButton = ({playerInfo}: {playerInfo: PlayerInfo}) => {
-    const {  setGameHistory } = gameStore()
+    const { toggleGameHistory } = gameStore()
 
     const saveGame = () => {
         const storageKey = "ssp-scorer"
@@ -71,7 +71,7 @@ const SaveGameButton = ({playerInfo}: {playerInfo: PlayerInfo}) => {
         }
 
         localStorage.setItem(storageKey, JSON.stringify(updatedData))
-        setGameHistory()
+        toggleGameHistory()
 
     }
 

@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import { Group, Button } from '@mantine/core';
 import  VisualScorer  from "@/components/VisualScorer/VisualScorer"
-import { UseGameHistory } from '@/hooks/UseGameHistory';
+import {GameHistoryRecord, UseGameHistory} from '@/hooks/UseGameHistory';
 import { gameStore } from '@/store/GameStore';
-import { CSVLink } from "react-csv"; 
+import { CSVLink } from "react-csv";
 import  {Player} from '@/interfaces/interfaces';
 
 
@@ -15,13 +15,14 @@ export const Header: FC = () => {
         <Group justify="center" p={25}>
             {gameCreated ? (
                 <VisualScorer   />
-            ) : ( <HeaderButtons /> )} 
+            ) : ( <HeaderButtons /> )}
         </Group>
     )
 }
 
 const HeaderButtons: FC = () => {
-    const { setGameHistory, gameHistory, gameOver, resetGameState } = gameStore()
+    const { toggleGameHistory, gameHistoryToggle, gameOver, resetGameState } = gameStore()
+    const gameRecords = UseGameHistory()
 
     const headers = [
         {label: "Game ID", key: "gameId"},
@@ -32,21 +33,19 @@ const HeaderButtons: FC = () => {
 
     return (
         <Group>
-            {!gameOver ? (<Button onClick={() => setGameHistory()}>{gameHistory ? "Create New Game" : "Game History"}</Button>) : (<Button onClick={() => resetGameState()}>Create New Game</Button>)}
-            
-            {gameHistory && (
-            <CSVLink data={exportGameData()} headers={headers}><Button>Export Games</Button></CSVLink>
-        )} 
+            {!gameOver ? (<Button onClick={() => toggleGameHistory()}>{gameHistoryToggle ? "Create New Game" : "Game History"}</Button>) : (<Button onClick={() => resetGameState()}>Create New Game</Button>)}
+
+            {gameRecords.length > 0 && (
+            <CSVLink data={exportGameData(gameRecords)} headers={headers} filename="ssp-game-history-export"><Button>Export Games</Button></CSVLink>
+        )}
         </Group>
     )
 }
 
 
-const exportGameData = () => {
+const exportGameData = (gameRecords: GameHistoryRecord[]) => {
 
-    const gameRecords = UseGameHistory()
-
-    const data = gameRecords.flatMap(([gameId, record]) => {
+    return gameRecords.flatMap(([gameId, record]) => {
         const {gameDate, playerInfo } = record
 
         return Object.values(playerInfo).map((player: Player) => ({
@@ -56,6 +55,4 @@ const exportGameData = () => {
             totalScore: player.totalScore
         }))
     })
-
-    return data
 }

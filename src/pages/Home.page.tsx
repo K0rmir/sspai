@@ -8,16 +8,16 @@ import {gameStore} from "@/store/GameStore"
 
 export function HomePage() {
 
-   const { gameCreated, gameHistory, gameOver, playerInfo } = gameStore()
+   const { gameCreated, gameHistoryToggle, gameOver, playerInfo } = gameStore()
 
 
   return (
     <>
       <Header/>
-      {!gameHistory && <CreateGame />}
+      {!gameHistoryToggle && <CreateGame />}
       {gameCreated && !gameOver && <GameScorer />}
       {gameOver && <GameOver playerInfo={playerInfo} />}
-      {gameHistory && <GameHistory/>}
+      {gameHistoryToggle && <GameHistory/>}
 
       {/* <ColorSchemeToggle /> */}
 

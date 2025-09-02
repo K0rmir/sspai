@@ -8,7 +8,7 @@ type GameStoreState = {
     gameCreated: boolean,
     gameOver: boolean,
     predictedScoreInStore: { key: string; score: number } | null,
-    gameHistory: boolean,
+    gameHistoryToggle: boolean,
 }
 
 type GameStoreActions = {
@@ -20,7 +20,7 @@ type GameStoreActions = {
     updatePlayerScores: (scores: Record<keyof PlayerInfo, number>) => void,
     setPredictedScoreInStore: (key: string, score: number) => void,
     clearPredictedScore: () => void,
-    setGameHistory: () => void
+    toggleGameHistory: () => void
     resetGameState: () => void
 }
 
@@ -41,7 +41,7 @@ const initialState: GameStoreState = {
     gameCreated: false,
     gameOver: false,  
     predictedScoreInStore: null,  
-    gameHistory: false,
+    gameHistoryToggle: false,
 
 }
 
@@ -73,7 +73,7 @@ export const gameStore= create<GameStoreState & GameStoreActions>((set) => {
             predictedScoreInStore: { key, score },
             })),
         clearPredictedScore: () => set({ predictedScoreInStore: null }),
-        setGameHistory: () => set((state) => ({ gameHistory: !state.gameHistory})),
+        toggleGameHistory: () => set((state) => ({ gameHistoryToggle: !state.gameHistoryToggle})),
         resetGameState: () => set(initialState)
     }
 })

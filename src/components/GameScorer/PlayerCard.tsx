@@ -14,6 +14,7 @@ type PlayerCardProps = {
 // TODO: Add images to avatar
 
 export const PlayerCard: FC<PlayerCardProps> = ({ name, totalScore, inputProps }) => {
+
     return (
         <div className={styles.playerCard}>
             <div className={styles.header}>
@@ -22,7 +23,7 @@ export const PlayerCard: FC<PlayerCardProps> = ({ name, totalScore, inputProps }
                 <Badge className={styles.scoreBadge}>{totalScore}</Badge>
             </div>
         <div className={styles.controls}>
-            <NumberInput className={styles.scoreInput} {...inputProps} radius="lg" hideControls   />
+            <NumberInput className={styles.scoreInput} radius="lg" hideControls value="" {...inputProps}  />
         </div>
 
         </div>

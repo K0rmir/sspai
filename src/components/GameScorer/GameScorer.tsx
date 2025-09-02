@@ -1,4 +1,4 @@
-import { FC, useEffect} from 'react';
+import { FC, useEffect, useState} from 'react';
 import { PlayerInfo } from '@/interfaces/interfaces';
 import { Button, Text, Stack, Group } from '@mantine/core';
 import { useForm } from '@mantine/form';
@@ -10,12 +10,13 @@ const GameScorer: FC = () => {
 
     const {playerInfo, playerNum, totalGameScore, predictedScoreInStore, updatePlayerScores, setGameOver, setGameCreated} = gameStore()
 
-    const initialRoundScores = Object.entries(playerInfo).reduce((acc, [key]) => {
-        acc[key as keyof PlayerInfo] = 0
-        return acc
-    }, {} as Record<keyof PlayerInfo, number>)
+  const initialRoundScores = Object.keys(playerInfo).reduce(
+    (acc, key) => ({ ...acc, [key]: 0 }),
+    {}
+  ) as Record<keyof PlayerInfo, number>
 
-    const form = useForm({
+
+  const form = useForm({
         initialValues: initialRoundScores
     })
 

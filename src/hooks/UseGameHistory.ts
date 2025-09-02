@@ -2,7 +2,7 @@ import { GameRecord } from '@/interfaces/interfaces';
 
 // Custom hook to retrieve game records from local storage 
 
-type GameHistoryRecord = [string, GameRecord]
+export type GameHistoryRecord = [string, GameRecord]
 
 
 export const UseGameHistory = (): GameHistoryRecord[] => {
