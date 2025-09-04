@@ -1,4 +1,4 @@
-import { FC, useEffect, useState} from 'react';
+import { FC, useEffect} from 'react';
 import { PlayerInfo } from '@/interfaces/interfaces';
 import { Button, Text, Stack, Group } from '@mantine/core';
 import { useForm } from '@mantine/form';

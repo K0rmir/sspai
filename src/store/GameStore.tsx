@@ -31,10 +31,10 @@ const playerKeys = ["playerOne", "playerTwo", "playerThree", "playerFour"]
 
 const initialState: GameStoreState = {
     playerInfo: {
-        playerOne: {name: "", totalScore: 0},
-        playerTwo: {name: "", totalScore: 0},
-        playerThree: {name: "", totalScore: 0},
-        playerFour: {name: "", totalScore: 0},
+        playerOne: {name: "", totalScore: 0, isWinner: false},
+        playerTwo: {name: "", totalScore: 0, isWinner: false},
+        playerThree: {name: "", totalScore: 0, isWinner: false},
+        playerFour: {name: "", totalScore: 0, isWinner: false},
     },
     playerNum: 2,
     totalGameScore: 40,
@@ -56,7 +56,7 @@ export const gameStore= create<GameStoreState & GameStoreActions>((set) => {
         createPlayers: (names) => set(() => ({
             playerInfo: names.reduce((acc, name, i) => {
                 const key = playerKeys[i] as keyof PlayerInfo
-                acc[key] = { name, totalScore: 0 }
+                acc[key] = { name, totalScore: 0, isWinner: false }
                 return acc
             }, {} as PlayerInfo)
         })),

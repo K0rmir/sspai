@@ -17,7 +17,8 @@ export const GameCard: FC<GameCardProps> = ({ gameRecord }) => {
              
            {Object.entries(playerInfo).map(([key, player]) => (
              <div key={key} className={styles.playerEntry}>
-               {player.name} - {player.totalScore}
+               <span>{player.name} - {player.totalScore}</span>
+               {player.isWinner && <span className={styles.trophy}>🏆</span>}
              </div>
            ))}
         

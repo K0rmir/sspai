@@ -9,19 +9,29 @@ import  {Player} from '@/interfaces/interfaces';
 
 export const Header: FC = () => {
 
-    const { gameCreated } = gameStore()
+    const { gameCreated, toggleGameHistory, gameHistoryToggle, gameOver, resetGameState } = gameStore()
 
     return (
         <Group justify="center" p={25}>
             {gameCreated ? (
-                <VisualScorer   />
-            ) : ( <HeaderButtons /> )}
+                <Group>
+                  <VisualScorer />
+                  <Button onClick={() => resetGameState()}>Reset Game</Button>
+                </Group>
+
+            ) : ( <HeaderButtons toggleGameHistory={toggleGameHistory} gameHistoryToggle={gameHistoryToggle} gameOver={gameOver} resetGameState={resetGameState} /> )}
         </Group>
     )
 }
 
-const HeaderButtons: FC = () => {
-    const { toggleGameHistory, gameHistoryToggle, gameOver, resetGameState } = gameStore()
+type HeaderButtonsProps = {
+  toggleGameHistory: () => void,
+  gameHistoryToggle: boolean,
+  gameOver: boolean,
+  resetGameState: () => void
+}
+
+const HeaderButtons: FC<HeaderButtonsProps> = ({ toggleGameHistory, gameHistoryToggle, gameOver, resetGameState}) => {
     const gameRecords = UseGameHistory()
 
     const headers = [
@@ -34,8 +44,7 @@ const HeaderButtons: FC = () => {
     return (
         <Group>
             {!gameOver ? (<Button onClick={() => toggleGameHistory()}>{gameHistoryToggle ? "Create New Game" : "Game History"}</Button>) : (<Button onClick={() => resetGameState()}>Create New Game</Button>)}
-
-            {gameRecords.length > 0 && (
+            {gameRecords.length > 0 && gameHistoryToggle && (
             <CSVLink data={exportGameData(gameRecords)} headers={headers} filename="ssp-game-history-export"><Button>Export Games</Button></CSVLink>
         )}
         </Group>

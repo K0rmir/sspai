@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { Button, Group, Text, Stack, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
-// import { PlayerInfo } from '@/interfaces/interfaces';
 import styles from "./CreateGame.module.css";
 import genericStyles from "@/components/GenericStyles.module.css";
 import {gameStore} from "@/store/GameStore"
@@ -18,10 +17,10 @@ const CreateGame: FC = () => {
 
     const form = useForm({
         initialValues: {
-            playerOne: '',
-            playerTwo: '',
-            playerThree: '',
-            playerFour: '',
+            playerOne: "",
+            playerTwo: "",
+            playerThree: "",
+            playerFour: "",
         },
     })
 

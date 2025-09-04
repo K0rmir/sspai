@@ -31,7 +31,7 @@ type FinalScoreCardProps = {
 
 const GameOver: FC<GameOverProps> = ({playerInfo}) => {
 
-    const {  gameHistoryToggle } = gameStore()
+    const { gameHistoryToggle } = gameStore()
 
     const highestScore = Math.max(...Object.values(playerInfo).map((player) => player.totalScore))
 
@@ -43,6 +43,7 @@ const GameOver: FC<GameOverProps> = ({playerInfo}) => {
         {Object.values(playerInfo).map((player) => {
 
             const isWinner = player.totalScore === highestScore
+            player.isWinner = isWinner
             return (<FinalScoreCard name={player.name} totalScore={player.totalScore} winner={isWinner}/>)
         })}
         <SaveGameButton playerInfo={playerInfo}/>
